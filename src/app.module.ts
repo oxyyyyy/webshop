@@ -12,18 +12,23 @@ import { AuthModule } from './auth/auth.module';
 import { Order } from './orders/order.entity';
 import { OrderItem } from './orders/order-item.entity';
 import { OrdersModule } from './orders/orders.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'webshop',
-      entities: [Product, Category, User, Order, OrderItem],
-      synchronize: true,
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: 'postgres',
+        host: config.get('DB_HOST'),
+        port: config.get<number>('DB_PORT'),
+        username: config.get('DB_USERNAME'),
+        password: config.get('DB_PASSWORD'),
+        database: config.get('DB_NAME'),
+        entities: [Product, Category, User, Order, OrderItem],
+        synchronize: true,
+      }),
     }),
     ProductsModule,
     CategoriesModule,

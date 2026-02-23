@@ -9,6 +9,9 @@ import { Category } from './categories/category.entity';
 import { User } from './users/user.entity';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { Order } from './orders/order.entity';
+import { OrderItem } from './orders/order-item.entity';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -19,13 +22,14 @@ import { AuthModule } from './auth/auth.module';
       username: 'postgres',
       password: 'postgres',
       database: 'webshop',
-      entities: [Product, Category, User],
+      entities: [Product, Category, User, Order, OrderItem],
       synchronize: true,
     }),
     ProductsModule,
     CategoriesModule,
     UsersModule,
     AuthModule,
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

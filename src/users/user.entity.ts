@@ -1,9 +1,11 @@
 import { Exclude } from 'class-transformer';
+import { Order } from 'src/orders/order.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 export enum UserRole {
@@ -28,6 +30,9 @@ export class User {
 
   @Column({ type: 'enum', enum: UserRole, default: UserRole.CUSTOMER })
   role: UserRole;
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 
   @CreateDateColumn()
   createdAt: Date;

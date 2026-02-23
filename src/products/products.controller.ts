@@ -7,6 +7,7 @@ import {
   Param,
   Body,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Product } from './product.entity';
@@ -16,14 +17,15 @@ import { Roles } from '../auth/roles.decorator';
 import { UserRole } from '../users/user.entity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { ProductQueryDto } from './dto/product-query.dto';
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get()
-  findAll(): Promise<Product[]> {
-    return this.productsService.findAll();
+  findAll(@Query() query: ProductQueryDto) {
+    return this.productsService.findAll(query);
   }
 
   @Get(':id')

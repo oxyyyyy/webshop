@@ -8,6 +8,7 @@ import { Order } from './order.entity';
 import { Repository } from 'typeorm';
 import { Product } from 'src/products/product.entity';
 import { OrderItem } from './order-item.entity';
+import { CreateOrderDto } from './dto/create-order.dto';
 
 @Injectable()
 export class OrdersService {
@@ -38,12 +39,7 @@ export class OrdersService {
     return order;
   }
 
-  async create(
-    payload: {
-      items: [{ productId: number; quantity: number }];
-    },
-    userId: number,
-  ): Promise<Order> {
+  async create(payload: CreateOrderDto, userId: number): Promise<Order> {
     const orderItems: OrderItem[] = [];
     for (const item of payload.items) {
       const product = await this.productRepository.findOneBy({

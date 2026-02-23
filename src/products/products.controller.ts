@@ -14,6 +14,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 import { UserRole } from '../users/user.entity';
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -32,7 +34,7 @@ export class ProductsController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @Post()
-  create(@Body() body: Partial<Product>): Promise<Product> {
+  create(@Body() body: CreateProductDto): Promise<Product> {
     return this.productsService.create(body);
   }
 
@@ -41,7 +43,7 @@ export class ProductsController {
   @Patch(':id')
   update(
     @Param('id') id: number,
-    @Body() body: Partial<Product>,
+    @Body() body: UpdateProductDto,
   ): Promise<Product> {
     return this.productsService.update(id, body);
   }

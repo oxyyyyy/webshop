@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { JwtAuthGuard, JwtPayload } from 'src/auth/jwt-auth.guard';
+import { CreateOrderDto } from './dto/create-order.dto';
 
 @Controller('orders')
 export class OrdersController {
@@ -18,7 +19,7 @@ export class OrdersController {
   @UseGuards(JwtAuthGuard)
   create(
     @Req() req: Request & { user: JwtPayload },
-    @Body() body: { items: [{ productId: number; quantity: number }] },
+    @Body() body: CreateOrderDto,
   ) {
     return this.ordersService.create(body, req.user.sub);
   }
